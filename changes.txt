@@ -261,3 +261,5 @@ Changes since 0.1.0
      month/day are not included when each label has the same month/day.
 125. src/xfig/plot.sl: The plot label position for a single user-specified
      label was being ignored.
+126. src/xfig/timetics.sl: Added an extra level of day tics to the
+     xfig_timetics function.
