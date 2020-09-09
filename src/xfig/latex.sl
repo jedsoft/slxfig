@@ -62,22 +62,15 @@ private define make_tmp_latex_file (base)
 
 private variable LaTeX_Pgm = "latex";
 private variable Dvi2Eps_Method = 0;
-#ifdef SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG
-private variable Png_Resolution = 600;
 
-define xfig_set_png_resolution (png_resolution)
+private define search_for_executable (file)
 {
-  Png_Resolution = png_resolution;
-}
-#endif
-
-private define search_path_for_file (path, file)
-{
-   variable delim = path_get_delimiter ();
+   variable path = getenv ("PATH");
 
    if (path == NULL)
      return NULL;
 
+   variable delim = path_get_delimiter ();
    foreach (strtok (path, char(delim)))
      {
         variable dir = ();
@@ -89,6 +82,26 @@ private define search_path_for_file (path, file)
 
    return NULL;
 }
+
+#ifdef SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG
+if ((NULL == search_for_executable ("dvipng"))
+    || (NULL == search_for_executable ("rsvg-convert")))
+{
+   () = fprintf (stderr, "\
+*** ERROR: SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG is defined but \n\
+           required programs `dvipng` and `rsvg-convert` coult no be found.\n\
+"
+		     );
+   throw RunTimeError;
+}
+
+
+private variable Png_Resolution = 600;
+define xfig_set_png_resolution (png_resolution)
+{
+  Png_Resolution = png_resolution;
+}
+#endif
 
 private define run_cmd (do_error, cmd)
 {
@@ -103,9 +116,7 @@ private define run_cmd (do_error, cmd)
      }
    else
      {
-	variable path = getenv ("PATH");   %  !FIXME: Unix only
-	if (path != NULL)
-	  exec_exists = (NULL != search_path_for_file (path, exec));
+	  exec_exists = (NULL != search_for_executable (exec));
      }
 
    ifnot (exec_exists)
@@ -127,6 +138,7 @@ private define run_cmd (do_error, cmd)
      }
    return status;
 }
+
 
 private define run_latex (file)
 {
@@ -559,11 +571,10 @@ private define latex_xxx2eps (env, envargs, xxx, base, fontstruct)
    variable hash = escape_latex_string (str);
    variable sha1, target;
 
-   variable ext =
 #ifdef SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG
-     ".png";
+   variable ext = ".png";
 #else
-     ".eps";
+   variable ext = ".eps";
 #endif
 
 #ifexists sha1sum

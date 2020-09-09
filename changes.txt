@@ -266,3 +266,5 @@ Changes since 0.1.0
 127. src/xfig/core.sl: Preserve the configured case of the paper size
      string when calling fig2dev.  Some versions of fig2dev appear to
      use case-sensitive values. (Jakob Stierhof).
+128. src/xfig/latex.sl: Check for the presence of `dvipng` and
+     `rsvg-convert` when SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG is defined.

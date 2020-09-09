@@ -1,6 +1,11 @@
 % -*- mode: slang; mode: fold -*-
 
-require("xfig");
+try
+{
+   require("xfig");
+}
+catch AnyError: exit (1);
+
 variable use_inkscape = 0;
 xfig_set_output_driver("pdf",
     "fig2dev -L svg %I %B.svg"

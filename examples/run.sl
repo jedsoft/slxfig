@@ -2,7 +2,18 @@
 _traceback=1;
 prepend_to_slang_load_path (path_concat (getcwd (), "../../src"));
 
-require ("xfig");
+try
+{
+   require ("xfig");
+}
+catch AnyError:
+{
+#ifdef SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG
+   exit (1);
+#else
+   throw;
+#endif
+}
 
 xfig_set_tmp_dir (sprintf ("/tmp/slxfig-%d", getuid()));
 
