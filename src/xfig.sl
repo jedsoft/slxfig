@@ -1,6 +1,6 @@
 $1 = 0; $2 = 2; $3 = 0;
 variable _xfig_version = $1*10000 + $2*100 + $3;
-variable _xfig_version_string = "pre$1.$2.$3-126"$;
+variable _xfig_version_string = "pre$1.$2.$3-127"$;
 
 ()=evalfile ("xfig/core");
 ()=evalfile ("xfig/polyline");

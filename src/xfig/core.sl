@@ -1397,7 +1397,6 @@ private define xfig_add_paper_size_info (name, width_inches, height_inches)
 {
    variable s = 1.0;
    if (qualifier_exists ("cm")) s = 1/2.54;
-   name = strlow(name);
    Paper_Info[strlow(name)] = struct
      {
         name = name,

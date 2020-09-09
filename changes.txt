@@ -263,3 +263,6 @@ Changes since 0.1.0
      label was being ignored.
 126. src/xfig/timetics.sl: Added an extra level of day tics to the
      xfig_timetics function.
+127. src/xfig/core.sl: Preserve the configured case of the paper size
+     string when calling fig2dev.  Some versions of fig2dev appear to
+     use case-sensitive values. (Jakob Stierhof).
