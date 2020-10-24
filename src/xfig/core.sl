@@ -330,18 +330,21 @@ private variable Fig2dev_Formats = Assoc_Type[String_Type];
 %#v+
 %   %I    Input .fig file
 %   %O    Output file
-%   %P    paper-size
+%   %P    This will resolve to -z <paper-size>
 %   %B    basename of the file
 %#v-
+% The \exmp{%P} option will only be expanded if the "papersize"
+% qualifier is given when rendering the output; otherwise it will be
+% ignored.
 %\example
 % The default driver for postscript output is given by:
 %#v+
-%  xfig_set_output_driver ("ps", "fig2dev -L ps -c -z %P %I %O");
+%  xfig_set_output_driver ("ps", "fig2dev -L ps -c %P %I %O");
 %#v-
 % The \var{ps2ps} command may result in a smaller file size at a slight cost
 % of resolution.  It may be used as follows:
 %#v+
-%    xfig_set_output_driver ("ps", "fig2dev -L ps -c -z %P %I %B-tmp.ps"
+%    xfig_set_output_driver ("ps", "fig2dev -L ps -c %I %B-tmp.ps"
 %                             + ";ps2ps %B-tmp.ps %O; rm -f %B-tmp.ps");
 %#v-
 %\seealso{xfig_set_paper_size}
@@ -351,9 +354,9 @@ define xfig_set_output_driver (ext, cmd)
 {
    Fig2dev_Formats[ext] = cmd;
 }
-xfig_set_output_driver("eps", "fig2dev -L eps -z %P %I %O");
-xfig_set_output_driver("ps", "fig2dev -L ps -c -z %P %I %O");
-xfig_set_output_driver("pdf", "fig2dev -L pdf -c -z %P %I %O");
+xfig_set_output_driver("eps", "fig2dev -L eps %I %O");  % paper size is not suppored for eps
+xfig_set_output_driver("ps", "fig2dev -L ps -c %P %I %O");
+xfig_set_output_driver("pdf", "fig2dev -L pdf -c %P %I %O");
 xfig_set_output_driver("png", "fig2dev -L png %I %O");
 xfig_set_output_driver("gif", "fig2dev -L gif %I %O");
 xfig_set_output_driver("jpg", "fig2dev -L jpeg %I %O");
@@ -741,7 +744,15 @@ define xfig_close_file (dev)
    if (fmt == NULL)
      return;
 
-   fmt = strreplace (fmt, "%P", dev.papersize);
+   variable papersize = "";
+   if (qualifier_exists("papersize"))
+     {
+	papersize = qualifier ("papersize");
+	if (papersize == NULL) papersize = dev.papersize;
+	papersize = "-z $papersize"$;
+     }
+
+   fmt = strreplace (fmt, "%P", papersize);
    fmt = strreplace (fmt, "%I", dev.figfile);
    fmt = strreplace (fmt, "%O", dev.devfile);
    fmt = strreplace (fmt, "%B", path_sans_extname(dev.figfile));
@@ -811,6 +822,7 @@ private define default_render ()
 %\qualifier{depth=intarray}{if specified, only objects of these depths are rendered}
 %\qualifier{verbose=intval}{if >=0, the fig2dev command is displayed}
 %\qualifier{fig=0|1}{if 0 (default), the .fig file will be removed, otherwise kept}
+%\qualifier{papersize[=VAL]}{Process the %P string in the output driver.  If VAL is given, use it for the papersize}
 %\seealso{xfig_set_verbose}
 %!%-
 {

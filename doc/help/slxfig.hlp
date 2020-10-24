@@ -34,6 +34,7 @@
   ; depth=intarray: if specified, only objects of these depths are rendered
   ; verbose=intval: if >=0, the fig2dev command is displayed
   ; fig=0|1: if 0 (default), the .fig file will be removed, otherwise kept
+  ; papersize[=VAL]: Process the %P string in the output driver.  If VAL is given, use it for the papersize
 
  SEE ALSO
   xfig_set_verbose
@@ -1656,19 +1657,22 @@ xfig_set_output_driver
 
    %I    Input .fig file
    %O    Output file
-   %P    paper-size
+   %P    This will resolve to -z <paper-size>
    %B    basename of the file
 
+ The `%P' option will only be expanded if the "papersize"
+ qualifier is given when rendering the output; otherwise it will be
+ ignored.
 
  EXAMPLE
  The default driver for postscript output is given by:
 
-  xfig_set_output_driver ("ps", "fig2dev -L ps -c -z %P %I %O");
+  xfig_set_output_driver ("ps", "fig2dev -L ps -c %P %I %O");
 
  The `ps2ps' command may result in a smaller file size at a slight cost
  of resolution.  It may be used as follows:
 
-    xfig_set_output_driver ("ps", "fig2dev -L ps -c -z %P %I %B-tmp.ps"
+    xfig_set_output_driver ("ps", "fig2dev -L ps -c %I %B-tmp.ps"
                              + ";ps2ps %B-tmp.ps %O; rm -f %B-tmp.ps");
 
 

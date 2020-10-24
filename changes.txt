@@ -272,3 +272,9 @@ Changes since 0.1.0
      value outside the fig format specified range 0-999.  SLxfig was
      modified to issue a warning if the depth falls outside this range, and
      then clip it accordingly. (Jakob Stierhof)
+130. Changed the way that '%P' is processed in the output driver
+     string.  Now it will get expanded to "-z <papersize>" only when
+     the ";papersize" qualifier is given when rendering.  This change
+     was necessary to deal with newer versions of fig2dev, which has
+     different semantics when -z is used for the pdf driver. (Jakob
+     Stierhof)
