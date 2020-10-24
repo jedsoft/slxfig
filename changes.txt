@@ -278,3 +278,8 @@ Changes since 0.1.0
      was necessary to deal with newer versions of fig2dev, which has
      different semantics when -z is used for the pdf driver. (Jakob
      Stierhof)
+131. Add support for setting a background color in the output driver.
+     This is accomplished by expanding the %G specifier for the output device
+     string to "-g <background>", where <background> is the value of
+     the ";background" qualifier passed to the render method. (Jakob
+     Stierhof)

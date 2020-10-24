@@ -35,6 +35,7 @@
   ; verbose=intval: if >=0, the fig2dev command is displayed
   ; fig=0|1: if 0 (default), the .fig file will be removed, otherwise kept
   ; papersize[=VAL]: Process the %P string in the output driver.  If VAL is given, use it for the papersize
+  ; background=color: Process the %G string in the output driver with the specified color
 
  SEE ALSO
   xfig_set_verbose
@@ -1657,12 +1658,17 @@ xfig_set_output_driver
 
    %I    Input .fig file
    %O    Output file
-   %P    This will resolve to -z <paper-size>
    %B    basename of the file
+   %P    This will resolve to -z <paper-size>
+   %G    This will resolve to -g <color>
 
- The `%P' option will only be expanded if the "papersize"
+ The `%P' specifier will only be expanded if the "papersize"
  qualifier is given when rendering the output; otherwise it will be
  ignored.
+
+ The `%G' specifier will be expanded when the "background"
+ qualifier is given when rendering the output; otherwise it is
+ ignored.  Not all output devices support setting a background color.
 
  EXAMPLE
  The default driver for postscript output is given by:

@@ -177,6 +177,8 @@
         otherwise kept
         ; papersize[=VAL]: Process the %P string in the output driver.
         If VAL is given, use it for the papersize
+        ; background=color: Process the %G string in the output driver
+        with the specified color
 
       See Also
         ``xfig_set_verbose''
@@ -1797,13 +1799,18 @@
 
              %I    Input .fig file
              %O    Output file
-             %P    This will resolve to -z <paper-size>
              %B    basename of the file
+             %P    This will resolve to -z <paper-size>
+             %G    This will resolve to -g <color>
 
 
 
-     The %P option will only be expanded if the "papersize" qualifier is
-     given when rendering the output; otherwise it will be ignored.
+     The %P specifier will only be expanded if the "papersize" qualifier
+     is given when rendering the output; otherwise it will be ignored.
+
+     The %G specifier will be expanded when the "background" qualifier
+     is given when rendering the output; otherwise it is ignored. Not
+     all output devices support setting a background color.
 
       Example
         The default driver for postscript output is given by:

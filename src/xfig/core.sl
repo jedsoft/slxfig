@@ -330,12 +330,17 @@ private variable Fig2dev_Formats = Assoc_Type[String_Type];
 %#v+
 %   %I    Input .fig file
 %   %O    Output file
-%   %P    This will resolve to -z <paper-size>
 %   %B    basename of the file
+%   %P    This will resolve to -z <paper-size>
+%   %G    This will resolve to -g <color>
 %#v-
-% The \exmp{%P} option will only be expanded if the "papersize"
+% The \exmp{%P} specifier will only be expanded if the "papersize"
 % qualifier is given when rendering the output; otherwise it will be
 % ignored.
+%
+% The \exmp{%G} specifier will be expanded when the "background"
+% qualifier is given when rendering the output; otherwise it is
+% ignored.  Not all output devices support setting a background color.
 %\example
 % The default driver for postscript output is given by:
 %#v+
@@ -356,12 +361,12 @@ define xfig_set_output_driver (ext, cmd)
 }
 xfig_set_output_driver("eps", "fig2dev -L eps %I %O");  % paper size is not suppored for eps
 xfig_set_output_driver("ps", "fig2dev -L ps -c %P %I %O");
-xfig_set_output_driver("pdf", "fig2dev -L pdf -c %P %I %O");
-xfig_set_output_driver("png", "fig2dev -L png %I %O");
-xfig_set_output_driver("gif", "fig2dev -L gif %I %O");
-xfig_set_output_driver("jpg", "fig2dev -L jpeg %I %O");
-xfig_set_output_driver("jpeg", "fig2dev -L jpeg %I %O");
-xfig_set_output_driver("svg", "fig2dev -L svg %I %O");
+xfig_set_output_driver("pdf", "fig2dev -L pdf -c %P %G %I %O");
+xfig_set_output_driver("png", "fig2dev -L png %G %I %O");
+xfig_set_output_driver("gif", "fig2dev -L gif %G %I %O");
+xfig_set_output_driver("jpg", "fig2dev -L jpeg %G %I %O");
+xfig_set_output_driver("jpeg", "fig2dev -L jpeg %G %I %O");
+xfig_set_output_driver("svg", "fig2dev -L svg %G %I %O");
 
 % Colors
 private variable Color_Type = struct
@@ -752,7 +757,16 @@ define xfig_close_file (dev)
 	papersize = "-z $papersize"$;
      }
 
+   variable background = qualifier ("background");
+   if (background != NULL)
+     background = xfig_lookup_color_rgb (background);
+   if (background != NULL)
+     background = sprintf("-g '#%06x'", background);
+   else
+     background = "";
+
    fmt = strreplace (fmt, "%P", papersize);
+   fmt = strreplace (fmt, "%G", background);
    fmt = strreplace (fmt, "%I", dev.figfile);
    fmt = strreplace (fmt, "%O", dev.devfile);
    fmt = strreplace (fmt, "%B", path_sans_extname(dev.figfile));
@@ -823,6 +837,7 @@ private define default_render ()
 %\qualifier{verbose=intval}{if >=0, the fig2dev command is displayed}
 %\qualifier{fig=0|1}{if 0 (default), the .fig file will be removed, otherwise kept}
 %\qualifier{papersize[=VAL]}{Process the %P string in the output driver.  If VAL is given, use it for the papersize}
+%\qualifier{background=color}{Process the %G string in the output driver with the specified color}
 %\seealso{xfig_set_verbose}
 %!%-
 {
