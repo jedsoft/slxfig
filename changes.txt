@@ -268,3 +268,7 @@ Changes since 0.1.0
      use case-sensitive values. (Jakob Stierhof).
 128. src/xfig/latex.sl: Check for the presence of `dvipng` and
      `rsvg-convert` when SLXFIG_RENDER_LATEX_AS_TRANSPARENT_PNG is defined.
+129. New versions of fig2dev will fail when an object has a depth
+     value outside the fig format specified range 0-999.  SLxfig was
+     modified to issue a warning if the depth falls outside this range, and
+     then clip it accordingly. (Jakob Stierhof)

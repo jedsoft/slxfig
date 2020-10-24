@@ -147,7 +147,7 @@ private define get_bbox_ellipse (e)
 
 private define set_depth (obj, depth)
 {
-   obj.depth = depth;
+   obj.depth = _xfig_verify_depth (depth);
 }
 
 private define set_pen_color (obj, pc)

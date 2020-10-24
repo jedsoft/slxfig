@@ -84,9 +84,9 @@ private define set_fill_color (obj, val)
    obj.fill_color = xfig_lookup_color (val);
 }
 
-private define set_depth (obj, val)
+private define set_depth (obj, depth)
 {
-   obj.depth = val;
+   obj.depth = _xfig_verify_depth (depth);
 }
 
 private define set_area_fill (obj, val)

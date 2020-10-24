@@ -1002,10 +1002,23 @@ define _xfig_get_scale_args (nargs)
    usage (".scale: Expecting 1, 2, or 3 scale parameters");
 }
 
+define _xfig_verify_depth (depth)
+{
+   if (0 <= depth <= 999) return depth;
+   variable new_depth = (depth < 0) ? 0 : 999;
+
+   () = fprintf (stderr, "*** Warning: Invalid depth %S. Using %S\n",
+		 depth, new_depth);
+   return new_depth;
+}
+
 define _xfig_render_depth (obj)
 {
    variable depth = qualifier ("depth");
-   return depth==NULL ? 1 : any (obj.depth==depth);
+   if (depth == NULL) return 1;
+
+   depth = _xfig_verify_depth (depth);
+   return any (obj.depth == depth);
 }
 
 private define translate_compound (c, dX)
@@ -1050,6 +1063,7 @@ private define scale_compound ()
 
 private define set_depth_compound (c, depth)
 {
+   depth = _xfig_verify_depth (depth);
    foreach (c.list)
      {
 	variable obj = ();

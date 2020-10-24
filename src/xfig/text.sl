@@ -170,7 +170,7 @@ private define text_scale ()
 
 private define text_set_depth (obj, depth)
 {
-   obj.depth = depth;
+   obj.depth = _xfig_verify_depth (depth);
 }
 
 define xfig_new_xfig_text (fontname, str)
