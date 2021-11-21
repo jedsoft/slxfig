@@ -286,4 +286,6 @@ Changes since 0.1.0
 132. When creating tic marks, remove minor tic marks that are at the
      positions of major ones.  This fixes a bug where a major grid
      line appears with the attributes of the minor ones.
+133. Added nodates qualifier to the xfig_timetics function to turn off
+     date (YYYY-MM-DD) labels.
 

@@ -173,6 +173,7 @@ private define prune_labels (dlabs, tlabs)
 % \qualifier{localtime}{Construct tic labels using localtime}
 % \qualifier{timetotm=&func}{Use func to convert a time value to a tm structure}
 % \qualifier{tmtotime=&func}{Use func to convert a tm structure to a time value}
+% \qualifier{nodates[=0|1]}{Turn on or off date (YYYY-MM-DD) labels}
 %
 % The default is to format the time as UTC using the \ifun{gmtime} and
 % \ifun{timegm} functions.  If the \exmp{localtime} qualifier is
@@ -201,7 +202,14 @@ define xfig_timetics (tmin, tmax)
    variable
      time_to_tm_func = qualifier ("timetotm"),
      tm_to_time_func = qualifier ("tmtotime"),
-     maxtics = qualifier("maxtics", 4);
+     maxtics = qualifier("maxtics", 4),
+     nodates = 0;
+
+   if (qualifier_exists ("nodates"))
+     {
+	nodates = qualifier ("nodates");
+	if (nodates == NULL) nodates = 1;
+     }
 
    if (qualifier_exists ("localtime"))
      {
@@ -313,7 +321,12 @@ define xfig_timetics (tmin, tmax)
 
    (dlabs, tlabs) = prune_labels (dlabs, tlabs);
    if (tlabs != NULL)
-     dlabs = tlabs + "\\\\" + dlabs;
+     {
+	if (nodates)
+	  dlabs = tlabs;
+	else
+	  dlabs = tlabs + "\\\\" + dlabs;
+     }
 
    tinfo = struct
      {
