@@ -1,4 +1,7 @@
 % -*- mode: slang; mode: fold; -*-
+
+require ("setfuns");
+
 private variable DEFAULT_IMAGE_DEPTH = 89;
 private variable DEFAULT_TIC_DEPTH = DEFAULT_IMAGE_DEPTH-10;
 private variable DEFAULT_LINE_DEPTH = DEFAULT_TIC_DEPTH-10;
@@ -694,12 +697,13 @@ private define make_tic_marks (axis) %{{{
    axis.major_tic_marks = NULL;
 
    variable ticlen;
-   variable tics;
-   tics = axis.major_tics;
+   variable major_tics, minor_tics, tics;
+   major_tics = axis.major_tics;
+   minor_tics = axis.minor_tics;
 
-   if ((tics != NULL) && axis.draw_major_tics)
+   if ((major_tics != NULL) && axis.draw_major_tics)
      {
-	tics = make_tic_objects (axis, tics, X, xmin, xmax, dX, dY,
+	tics = make_tic_objects (axis, major_tics, X, xmin, xmax, dX, dY,
 				 axis.major_tic_len);
 	tics.set_pen_color (axis.major_tic_color);
 	tics.set_line_style (axis.major_tic_linestyle);
@@ -708,10 +712,13 @@ private define make_tic_marks (axis) %{{{
 	axis.major_tic_marks = tics;
      }
 
-   tics = axis.minor_tics;
-   if ((tics != NULL) && (axis.draw_minor_tics))
+   if ((minor_tics != NULL) && (axis.draw_minor_tics))
      {
-	tics = make_tic_objects (axis, tics, X, xmin, xmax, dX, dY,
+	% prune the minor tics so that the major ones are not overwritten
+	if (major_tics != NULL)
+	  minor_tics = minor_tics[complement(minor_tics, major_tics)];
+
+	tics = make_tic_objects (axis, minor_tics, X, xmin, xmax, dX, dY,
 				 axis.minor_tic_len);
 	tics.set_pen_color (axis.minor_tic_color);
 	tics.set_line_style (axis.minor_tic_linestyle);

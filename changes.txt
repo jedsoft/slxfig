@@ -283,3 +283,7 @@ Changes since 0.1.0
      string to "-g <background>", where <background> is the value of
      the ";background" qualifier passed to the render method. (Jakob
      Stierhof)
+132. When creating tic marks, remove minor tic marks that are at the
+     positions of major ones.  This fixes a bug where a major grid
+     line appears with the attributes of the minor ones.
+
