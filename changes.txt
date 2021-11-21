@@ -288,4 +288,5 @@ Changes since 0.1.0
      line appears with the attributes of the minor ones.
 133. Added nodates qualifier to the xfig_timetics function to turn off
      date (YYYY-MM-DD) labels.
-
+134. Updated aclocal.m4; added support for CPPFLAGS (based upon patch
+     from Rafael Laboissière)

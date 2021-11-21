@@ -16,7 +16,7 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-USA.  
+USA.
 */
 #include "config.h"
 
@@ -102,7 +102,6 @@ static void fill0 (unsigned char *bitmap, unsigned int n)
      }
    bitmap[i] = ch;
 }
-
 
 /* PUT A ONE IN THE NTH BIT OF BITMAP */
 static void mark1 (unsigned char *bitmap, unsigned int n)
@@ -215,7 +214,7 @@ C     IJ STORES SUBCRIPTS USED DURING THE SPIRAL SEARCH.
    int i1[2];
    int i2[2];
    int i3[6];
-/* 
+/*
 C
 C     I1, I2 AND I3 ARE USED FOR SUBSCRIPT COMPUTATIONS DURING THE
 C     EXAMINATION OF LINES FROM Z(I,J) TO IT'S NEIGHBORS.
@@ -273,10 +272,10 @@ C
 
    if (-1 == (*draw) (X-1, Y-1, 6, ct))
      return -1;
-   
+
    icur = 1;
    jcur = 1;
-   
+
    fill0 (bitmap, 2*nx*ny*ncv);
 
 /*
@@ -301,7 +300,7 @@ C
      {
 	I = icur;
 	J = jcur;
-	
+
 label_20:
 	l2[0] = I;
 	l2[1] = J;
@@ -345,7 +344,7 @@ label_40:
 	       continue;
 
 	     jump = 100;
-	     
+
 	     /* C     THE NEXT 15 STATEMENTS (OR SO) DETECT BOUNDARIES. */
 label_60:
 	     ix = 1;
@@ -362,10 +361,10 @@ label_60:
 		  if (ij[1-l] >= l1[1-l])
 		    goto label_90;
 	       }
-	     
+
 	     ii = I + i1[1-l];
 	     jj = J + i1[l];
-	     
+
 	     if (Z(ii-1, jj-1) <= zmax)
 	       {
 		  if (Z(I,J) < zmax)
@@ -376,12 +375,12 @@ label_60:
 	       }
 	     label_90:
 	     ix += 2;
-	     
+
 	     if (jump != 100)
 	       goto label_280;
-	     
+
 label_100:
-	     
+
 	     if ((ix != 3)
 		 && (ix + ibkey != 0))
 	       {
@@ -427,7 +426,7 @@ label_140:
 		  goto label_30;
 	       }
 
-	     if (idir == nxidir) 
+	     if (idir == nxidir)
 	       break;
 	     nxidir++;
 	     ij[l] = l1[k];
@@ -441,7 +440,7 @@ label_140:
 	  return 0;		       /* ??? */
 	ibkey = 1;
      } /* goto label_10 */
-   
+
 /* C */
 /* C     AN ACCEPTABLE LINE SEGMENT HAS BEEN FOUND. */
 /* C     FOLLOW THE CONTOUR UNTIL IT EITHER HITS A BOUNDARY OR CLOSES. */
@@ -511,7 +510,7 @@ label_190:
 	     ni++;
 	     ks = k;
 	  }
-	
+
 	if (ni != 2)
 	  {
 /* C */
@@ -548,7 +547,7 @@ label_190:
 	offset = ncv*(2*(ny*(I-1) + (J-1)) + l)+icv;
 	if (iget (bitmap, offset) == 0)
 	  goto label_60;
-	
+
 	iflag = 5;
 	goto label_290;
 label_280:
@@ -556,7 +555,7 @@ label_280:
 	  iflag = 4;
 label_290:
 	iedge = ks + 2;
-	if (iedge > 3) 
+	if (iedge > 3)
 	  iedge -= 4;
 	xint[iedge] = xint[ks];
      }
@@ -584,7 +583,7 @@ static SLang_Array_Type *make_float_array (float *x, unsigned int npts)
 
    if (NULL == (at = SLang_create_array (SLANG_FLOAT_TYPE, 0, NULL, &inpts, 1)))
      return NULL;
-   
+
    memcpy ((char *) at->data, (char *)x, npts * sizeof (float));
    return at;
 }
@@ -628,7 +627,7 @@ static int resize_contour (Contour_Type *ct)
    if (NULL == (tmp = (float *)SLrealloc ((char *)ct->ypts, new_num*sizeof(float))))
      return -1;
    ct->ypts = tmp;
-   
+
    ct->nmalloced = new_num;
    return 0;
 }
@@ -655,7 +654,7 @@ static int draw_callback (double x, double y, int flag, Contour_Type *ct)
       default:
 	SLang_verror (SL_INTERNAL_ERROR, "Error in gcont module: Unexpected flag %d", flag);
 	return -1;
-   
+
       case 2:
       case 3:			       /* start */
 	ct->zlevel = zlevel;
@@ -663,12 +662,12 @@ static int draw_callback (double x, double y, int flag, Contour_Type *ct)
 
       case 1:			       /* continuation */
 	break;
-	
+
       case 5:			       /* finish closed */
 	ct->xpts[ct->npts] = ct->xpts[0];
 	ct->ypts[ct->npts] = ct->ypts[0];
 	ct->npts++;
-	/* drop */
+	/* fall through */
       case 4:			       /* finish at boundary */
 	if (-1 == push_contour (ct))
 	  return -1;
@@ -729,7 +728,7 @@ static void gcontr_intrin (void)
    Contour_Type *ct;
    SLang_Any_Type *client_data = NULL;
    int nargs;
-   
+
    nargs = SLang_Num_Function_Args;
    if (nargs == 4)
      {
@@ -744,14 +743,14 @@ static void gcontr_intrin (void)
 	  SLang_free_anytype (client_data);
 	return;
      }
-   
+
    if (NULL == (nt = SLang_pop_function ()))
      {
 	if (client_data != NULL)
 	  SLang_free_anytype (client_data);
 	return;
      }
-   
+
    if (-1 == SLang_pop_array_of_type (&zvals, SLANG_DOUBLE_TYPE))
      goto free_return;
    if (zvals->num_dims != 1)
@@ -813,7 +812,7 @@ static void gcontr_intrin (void)
 	SLang_verror (SL_NOT_IMPLEMENTED, "Unsupported image type");
 	goto free_return;
      }
-   
+
    if (NULL != (ct = alloc_contour_type (nt, client_data)))
      {
 	double zmax = 1e10;
@@ -839,7 +838,6 @@ static void gcontr_intrin (void)
    SLang_free_array (image);
    SLang_free_array (zvals);
 }
-
 
 static SLang_Intrin_Fun_Type Module_Intrinsics [] =
 {

@@ -66,7 +66,7 @@ all: $(MODULES) xfig.sl
 # Put Rules to create the modules here
 #---------------------------------------------------------------------------
 gcontour-module.so: gcontour-module.c
-	$(CC_SHARED) $(INCS) gcontour-module.c -o gcontour-module.so $(LIBS)
+	$(CC_SHARED) $(INCS) $(LDFLAGS) gcontour-module.c -o gcontour-module.so $(LIBS)
 xfig.sl: ../changes.txt
 	if [ -x $(UPDATE_VERSION_SCRIPT) ]; then \
 	  $(UPDATE_VERSION_SCRIPT) ../changes.txt xfig.sl; \
