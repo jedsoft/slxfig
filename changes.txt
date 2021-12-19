@@ -290,3 +290,4 @@ Changes since 0.1.0
      date (YYYY-MM-DD) labels.
 134. Updated aclocal.m4; added support for CPPFLAGS (based upon patch
      from Rafael Laboissière)
+135. Updated the README file
