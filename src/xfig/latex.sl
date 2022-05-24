@@ -53,7 +53,15 @@ private define make_auto_file (base, ext, sha1)
 
 private define make_tmp_latex_file (base)
 {
-   return xfig_make_tmp_file (base, ".tex");
+   variable file = xfig_make_tmp_file (base, ".tex");
+
+   foreach (path_sans_extname (file) + [".log", ".dvi", ".aux", ".tex"])
+     {
+	variable f = ();
+	xfig_add_tmp_file (f);
+     }
+
+   return file;
 }
 
 %}}}

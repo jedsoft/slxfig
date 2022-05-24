@@ -291,3 +291,5 @@ Changes since 0.1.0
 134. Updated aclocal.m4; added support for CPPFLAGS (based upon patch
      from Rafael Laboissière)
 135. Updated the README file
+136. Remove temporary latex-generated .aux, .dvi, and .log file upon
+     exit
