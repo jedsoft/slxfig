@@ -1735,6 +1735,9 @@ xfig_timetics
    ; localtime: Construct tic labels using localtime
    ; timetotm=&func: Use func to convert a time value to a tm structure
    ; tmtotime=&func: Use func to convert a tm structure to a time value
+   ; nodates[=0|1]: Turn on or off date (YYYY-MM-DD) labels
+   ; dateformat=VAL: strftime format for date labels (default: `"%Y-%m-%d"'
+   ; timeformat=VAL: strftime format for time labels (default:`"%H:%M:%S"'
 
  The default is to format the time as UTC using the `gmtime' and
  `timegm' functions.  If the `localtime' qualifier is

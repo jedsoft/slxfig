@@ -1,7 +1,7 @@
   SLxfig Reference
   John E. Davis, with numerous contributions from Manfred
   Hanke
-  Oct 24, 2020
+  Dec 17, 2023
   ____________________________________________________________
 
   Table of Contents
@@ -1885,6 +1885,11 @@
         structure
         ; tmtotime=&func: Use func to convert a tm structure to a time
         value
+        ; nodates[=0|1]: Turn on or off date (YYYY-MM-DD) labels
+        ; dateformat=VAL: strftime format for date labels (default:
+        "%Y-%m-%d"
+        ; timeformat=VAL: strftime format for time labels
+        (default:"%H:%M:%S"
 
         The default is to format the time as UTC using the gmtime and
         timegm functions. If the localtime qualifier is given, the

@@ -174,6 +174,8 @@ private define prune_labels (dlabs, tlabs)
 % \qualifier{timetotm=&func}{Use func to convert a time value to a tm structure}
 % \qualifier{tmtotime=&func}{Use func to convert a tm structure to a time value}
 % \qualifier{nodates[=0|1]}{Turn on or off date (YYYY-MM-DD) labels}
+% \qualifier{dateformat=VAL}{strftime format for date labels (default: \exmp{"%Y-%m-%d"}}
+% \qualifier{timeformat=VAL}{strftime format for time labels (default:\exmp{"%H:%M:%S"}}
 %
 % The default is to format the time as UTC using the \ifun{gmtime} and
 % \ifun{timegm} functions.  If the \exmp{localtime} qualifier is
@@ -203,8 +205,12 @@ define xfig_timetics (tmin, tmax)
      time_to_tm_func = qualifier ("timetotm"),
      tm_to_time_func = qualifier ("tmtotime"),
      maxtics = qualifier("maxtics", 4),
+     date_format = qualifier ("dateformat"),
+     time_format = qualifier ("timeformat"),
      nodates = 0;
 
+   if ((time_format == NULL) || (time_format == "")) time_format = "%H:%M:%S";
+   if ((date_format == NULL) || (date_format == "")) date_format = "%Y-%m-%d";
    if (qualifier_exists ("nodates"))
      {
 	nodates = qualifier ("nodates");
@@ -239,7 +245,7 @@ define xfig_timetics (tmin, tmax)
 	{[0], [0,30], [0:59:15], [0:59:5], [0:59]},%  secs
 	{[0], [0,30], [0:59:15], [0:59:5], [0:59]},%  mins
 	{[0], [0,12], [0:23:6], [0:23:3], [0:23]}, %  hours
-	{[1], [1,15], [1,8,15,22,29], [1,4,8,11,15,18,22,25,29], [1:31]},     % days
+	{[1], [1,15], [1,8,15,22], [1,4,8,11,15,18,22,25,28], [1:31]},     % days
 	{[0], [0,6], [0,3,6,9], [0:11]},           % months
 	{[1920:2030:20], [1910:2030:10], [1905:2035:5], [1902:2038:1]}%, [1970:2030:1]}, % years
      };
@@ -312,8 +318,8 @@ define xfig_timetics (tmin, tmax)
 	variable t = major[i];
 	variable tm = (@time_to_tm_func)(t);
 	% major[i] = typecast(t, Long_Type);
-	tlabs[i] = strftime("%H:%M:%S", tm);
-	variable dlabs_i = strftime("%Y-%m-%d", tm);
+	tlabs[i] = strftime(time_format, tm);
+	variable dlabs_i = strftime(date_format, tm);
 	%if (last_dlab == dlabs_i) dlabs_i = "";
 	%else last_dlab = dlabs_i;
 	dlabs[i] = dlabs_i;
@@ -325,7 +331,10 @@ define xfig_timetics (tmin, tmax)
 	if (nodates)
 	  dlabs = tlabs;
 	else
-	  dlabs = tlabs + "\\\\" + dlabs;
+	  {
+	     dlabs = "\\begin{center}" + tlabs + "\\\\" + dlabs + "\\end{center}";
+
+	  }
      }
 
    tinfo = struct
