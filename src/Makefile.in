@@ -87,7 +87,7 @@ install_directories:
 	$(MKINSDIR) $(DEST_SL_FILES_INSTALL_DIR)/xfig
 	$(MKINSDIR) $(DEST_HLP_FILES_INSTALL_DIR)
 
-install_modules:
+install_modules: install_directories
 	@for X in $(MODULES); \
 	do \
 		Y=$$X.$(MODULE_VERSION); \
@@ -101,7 +101,7 @@ install_modules:
 		$(LN) $$Y $(DEST_MODULE_INSTALL_DIR)/$$X; \
 	done
 
-install_slfiles:
+install_slfiles: install_directories
 	@for X in $(SL_FILES); \
 	do \
 		echo $(INSTALL_DATA) $$X $(DEST_SL_FILES_INSTALL_DIR); \
@@ -119,7 +119,7 @@ install_slfiles:
 		fi; \
 	done
 
-install_hlpfiles:
+install_hlpfiles: install_directories
 	@for X in $(HLP_FILES); \
 	do \
 		echo $(INSTALL_DATA) $$X $(DEST_HLP_FILES_INSTALL_DIR); \
